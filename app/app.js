@@ -42,6 +42,40 @@ app.post('/businesses/create', (req, res) => {
   res.send(businesses[businessUuid])
 })
 
+// Update a business
+app.patch('/businesses/edit/:businessUuid', (req, res) => {
+  const businessUuid = req.params.businessUuid
+  const prevBusiness = businesses[businessUuid]
+  if (!prevBusiness) {
+    res.status(404).send('Business not found')
+    return
+  }
+  const businessName = req.body.businessName || prevBusiness.businessName
+  const streetAddress = req.body.streetAddress || prevBusiness.streetAddress
+  const city = req.body.city || prevBusiness.city
+  const state = req.body.state || prevBusiness.state
+  const zipCode = req.body.zipCode || prevBusiness.zipCode
+  const businessPhoneNum = req.body.businessPhoneNum || prevBusiness.businessPhoneNum
+  const businessEmail = req.body.businessEmail || prevBusiness.businessEmail
+  const category = req.body.category || prevBusiness.category
+  const website = req.body.website || prevBusiness.website
+  businesses[businessUuid] = {
+    businessName: businessName,
+    streetAddress: streetAddress,
+    city: city,
+    state: state,
+    zipCode: zipCode,
+    businessPhoneNum: businessPhoneNum,
+    businessEmail: businessEmail,
+    category: category,
+    website: website,
+    ownerId: prevBusiness.ownerId,
+    businessUuid: prevBusiness.businessUuid
+  }
+
+  res.send(businesses[businessUuid])
+});
+
 /**
  * Business endpoints for users
  */
