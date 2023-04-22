@@ -1,21 +1,20 @@
 const express = require('express')
-const app = express()
-const port = 3000
 const bodyParser = require('body-parser')
+const app = express()
 app.use(bodyParser.json())
+const port = 3000
+//app.use(bodyParser.json())
+
+global.crypto = require('crypto')
+
 
 /**
  * Business owner endpoints
  */
-var businesses = {}
-
-// List businesses owned by a user
-app.get('/businesses', (req, res) => {
-  const ownerId = req.query.ownerId
-})
+let businesses = {}
 
 // Create a new business
-app.post('/businesses', (req, res) => {
+app.post('/businesses/create', (req, res) => {
   const businessName = req.body.businessName
   const streetAddress = req.body.streetAddress
   const city = req.body.city
@@ -43,12 +42,32 @@ app.post('/businesses', (req, res) => {
   res.send(businesses[businessUuid])
 })
 
+/**
+ * Business endpoints for users
+ */
+
+// List businesses
+app.get('/businesses', (req, res) => {
+  const page = req.query.page || 0
+  const pageSize = 10
+  const pageOfBusinesses = Object.values(businesses).slice(page * pageSize, (page + 1) * pageSize)
+  res.send(pageOfBusinesses)
+});
+
+// List details of a business
+app.get('/businesses/:businessUuid', (req, res) => {
+  const businessUuid = req.params.businessUuid
+  const business = businesses[businessUuid]
+  res.send(business)
+});
+
+
 
 app.get('/:id', (req, res) => {
   res.send('Hello World!')
 })
 
-app.post('/post', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
