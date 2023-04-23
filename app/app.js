@@ -111,13 +111,18 @@ app.get('/businesses/:businessUuid', (req, res) => {
 let reviews = {}
 
 // Create a new review
-// TODO - add userUuid and do not allow users to review the same business twice
+// todo do not allow users to review the same business twice
 app.post('/reviews/create', (req, res) => {
   const businessUuid = req.body.businessUuid
   const starRating = req.body.starRating
   const moneyRating = req.body.moneyRating
   const writtenReview = req.body.writtenReview || ''
+  const userUuid = req.body.userUuid
 
+  if (!userUuid) {
+    res.status(400).send('User uuid is required')
+    return
+  }
   if (!businesses[businessUuid]) {
     res.status(404).send('Business not found')
     return
@@ -140,7 +145,8 @@ app.post('/reviews/create', (req, res) => {
     starRating: starRating,
     moneyRating: moneyRating,
     writtenReview: writtenReview,
-    reviewUuid: reviewUuid
+    reviewUuid: reviewUuid,
+    userUuid: userUuid
   }
   res.send(reviews[reviewUuid])
 })
