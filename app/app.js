@@ -76,10 +76,21 @@ app.patch('/businesses/edit/:businessUuid', (req, res) => {
   res.send(businesses[businessUuid])
 });
 
+// Delete a business
+app.delete('/businesses/delete/:businessUuid', (req, res) => {
+  const businessUuid = req.params.businessUuid
+  const business = businesses[businessUuid]
+  if (!business) {
+    res.status(404).send('Business not found')
+    return
+  }
+  delete businesses[businessUuid]
+  res.send(business)
+});
+
 /**
  * Business endpoints for users
  */
-
 // List businesses
 app.get('/businesses', (req, res) => {
   const page = req.query.page || 0
@@ -95,11 +106,6 @@ app.get('/businesses/:businessUuid', (req, res) => {
   res.send(business)
 });
 
-
-
-app.get('/:id', (req, res) => {
-  res.send('Hello World!')
-})
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
