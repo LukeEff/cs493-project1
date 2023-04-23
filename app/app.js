@@ -7,6 +7,7 @@ const port = 3000
 
 global.crypto = require('crypto')
 
+let users = {}
 
 /**
  * Business owner endpoints
@@ -105,6 +106,45 @@ app.get('/businesses/:businessUuid', (req, res) => {
   const business = businesses[businessUuid]
   res.send(business)
 });
+
+/**
+ * Review endpoints for users
+ */
+let reviews = {}
+
+// Create a new review
+app.post('/reviews/create', (req, res) => {
+  const businessUuid = req.body.businessUuid
+  const starRating = req.body.starRating
+  const moneyRating = req.body.moneyRating
+  const writtenReview = req.body.writtenReview || ''
+  
+  if (!businesses[businessUuid]) {
+    res.status(404).send('Business not found')
+    return
+  }
+  if (!starRating || !moneyRating) {
+    res.status(400).send('Star rating and money rating are required')
+    return
+  }
+  if (starRating < 1 || starRating > 5) {
+    res.status(400).send('Star rating must be between 1 and 5')
+    return
+  }
+  if (moneyRating < 1 || moneyRating > 5) {
+    res.status(400).send('Money rating must be between 1 and 5')
+    return
+  }
+  const reviewUuid = crypto.randomUUID()
+  reviews[reviewUuid] = {
+    businessUuid: businessUuid,
+    starRating: starRating,
+    moneyRating: moneyRating,
+    writtenReview: writtenReview,
+    reviewUuid: reviewUuid
+  }
+  res.send(reviews[reviewUuid])
+})
 
 
 app.get('/', (req, res) => {
