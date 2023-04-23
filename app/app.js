@@ -113,12 +113,13 @@ app.get('/businesses/:businessUuid', (req, res) => {
 let reviews = {}
 
 // Create a new review
+// TODO - add userUuid and do not allow users to review the same business twice
 app.post('/reviews/create', (req, res) => {
   const businessUuid = req.body.businessUuid
   const starRating = req.body.starRating
   const moneyRating = req.body.moneyRating
   const writtenReview = req.body.writtenReview || ''
-  
+
   if (!businesses[businessUuid]) {
     res.status(404).send('Business not found')
     return
@@ -145,6 +146,28 @@ app.post('/reviews/create', (req, res) => {
   }
   res.send(reviews[reviewUuid])
 })
+
+// List all reviews with a filter
+app.get('/reviews', (req, res) => {
+  const page = req.query.page || 0
+  const businessUuid = req.query.businessUuid
+  const userUuid = req.query.userUuid
+  if (!userUuid && !businessUuid) {
+    res.status(400).send('Must provide either a businessUuid or userUuid')
+    return
+  }
+  const pageSize = 10
+  const pageOfReviews = Object.values(reviews).filter(review => {
+    if (businessUuid) {
+      return review.businessUuid === businessUuid
+    }
+    if (userUuid) {
+      return review.userUuid === userUuid
+    }
+  }).slice(page * pageSize, (page + 1) * pageSize);
+
+  res.send(pageOfReviews)
+});
 
 
 app.get('/', (req, res) => {
