@@ -193,6 +193,12 @@ describe('Endpoints', function() {
           expect(JSON.parse(body).starRating).to.equal(starRating);
         }, 10000);
       });
+      it('should delete a review', function () {
+        const url = 'http://localhost:3000/reviews/delete/' + createdReview.reviewUuid;
+        request.delete(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+        }, 10000);
+      });
     });
   });
 });
