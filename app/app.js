@@ -190,6 +190,18 @@ app.patch('/reviews/edit/:reviewUuid', (req, res) => {
   res.send(reviews[reviewUuid])
 });
 
+// Delete a review
+app.delete('/reviews/delete/:reviewUuid', (req, res) => {
+  const reviewUuid = req.params.reviewUuid
+  const review = reviews[reviewUuid]
+  if (!review) {
+    res.status(404).send('Review not found')
+    return
+  }
+  delete reviews[reviewUuid]
+  res.send(review)
+});
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
