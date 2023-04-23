@@ -21,7 +21,7 @@ describe('Business Owner', function() {
       const businessEmail = 'test@test.com';
       const category = 'Test Category';
       const website = 'www.test.com';
-      const ownerId = '12345';
+      const ownerUuid = '12345';
       const business = {
         businessName: businessName,
         streetAddress: streetAddress,
@@ -32,7 +32,7 @@ describe('Business Owner', function() {
         businessEmail: businessEmail,
         category: category,
         website: website,
-        ownerId: ownerId,
+        ownerUuid: ownerUuid
       };
 request.post(url, {form: business}, function(err, res, body) {
         expect(res.statusCode).to.equal(200);

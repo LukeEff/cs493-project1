@@ -23,14 +23,13 @@ app.post('/businesses/create', (req, res) => {
   const businessEmail = req.body.businessEmail
   const category = req.body.category
   const website = req.body.website
-  const ownerId = req.body.ownerId
   const ownerUuid = req.body.ownerUuid
 
   if (!ownerUuid) {
     res.status(400).send('Owner uuid is required')
     return
   }
-  if (!businessName || !streetAddress || !city || !state || !zipCode || !businessPhoneNum || !businessEmail || !category || !website || !ownerId) {
+  if (!businessName || !streetAddress || !city || !state || !zipCode || !businessPhoneNum || !businessEmail || !category || !website) {
     res.status(400).send('All fields are required')
     return
   }
@@ -46,8 +45,8 @@ app.post('/businesses/create', (req, res) => {
     businessEmail: businessEmail,
     category: category,
     website: website,
-    ownerId: ownerId,
     businessUuid: businessUuid
+    ownerUuid: ownerUuid
   }
   res.send(businesses[businessUuid])
 })
