@@ -169,6 +169,26 @@ app.get('/reviews', (req, res) => {
   res.send(pageOfReviews)
 });
 
+// Update a review
+app.patch('/reviews/edit/:reviewUuid', (req, res) => {
+  const reviewUuid = req.params.reviewUuid
+  const prevReview = reviews[reviewUuid]
+  if (!prevReview) {
+    res.status(404).send('Review not found')
+    return
+  }
+  const starRating = req.body.starRating || prevReview.starRating
+  const moneyRating = req.body.moneyRating || prevReview.moneyRating
+  const writtenReview = req.body.writtenReview || prevReview.writtenReview
+  reviews[reviewUuid] = {
+    businessUuid: prevReview.businessUuid,
+    starRating: starRating,
+    moneyRating: moneyRating,
+    writtenReview: writtenReview,
+    reviewUuid: prevReview.reviewUuid
+  }
+  res.send(reviews[reviewUuid])
+});
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
