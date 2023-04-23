@@ -158,6 +158,15 @@ describe('Endpoints', function() {
           expect(response.statusCode).to.equal(200);
         }, 10000);
       });
+      it ('should list all reviews', function () {
+        // userUuid is a query param
+        const userUuid = '12345';
+        const url = 'http://localhost:3000/reviews?userUuid=' + userUuid;
+        request.get(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          expect(JSON.parse(body)).to.be.an('array');
+        });
+      });
     });
   });
   describe('Photos', function () {
