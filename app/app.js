@@ -209,6 +209,7 @@ let photos = {}
 app.post('/photos/create', (req, res) => {
   const businessUuid = req.body.businessUuid
   const photoUrl = req.body.photoUrl
+  const userUuid = req.body.userUuid
   if (!businesses[businessUuid]) {
     res.status(404).send('Business not found')
     return
@@ -217,13 +218,44 @@ app.post('/photos/create', (req, res) => {
     res.status(400).send('Photo URL is required')
     return
   }
+  if (!userUuid) {
+    res.status(400).send('User UUID is required')
+    return
+  }
+
   const photoUuid = crypto.randomUUID()
   photos[photoUuid] = {
     businessUuid: businessUuid,
     photoUrl: photoUrl,
-    photoUuid: photoUuid
+    photoUuid: photoUuid,
+    userUuid: userUuid
   }
   res.send(photos[photoUuid])
+});
+
+// List all photos with a filter
+app.get('/photos', (req, res) => {
+  const page = req.query.page || 0
+  const businessUuid = req.query.businessUuid
+  const userUuid = req.query.userUuid
+  if (!userUuid && !businessUuid) {
+    res.status(400).send('Must provide either a businessUuid or userUuid')
+    return
+  }
+  const pageSize = 10
+  const pageOfPhotos = Object.values(photos).filter(photo => {
+    if (businessUuid && userUuid) {
+      return photo.businessUuid === businessUuid && photo.userUuid === userUuid
+    }
+    if (businessUuid) {
+      return photo.businessUuid === businessUuid
+    }
+    if (userUuid) {
+      return photo.userUuid === userUuid
+    }
+  }).slice(page * pageSize, (page + 1) * pageSize);
+
+  res.send(pageOfPhotos)
 });
 
 app.get('/', (req, res) => {
