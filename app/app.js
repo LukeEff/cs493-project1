@@ -45,7 +45,7 @@ app.post('/businesses/create', (req, res) => {
     businessEmail: businessEmail,
     category: category,
     website: website,
-    businessUuid: businessUuid
+    businessUuid: businessUuid,
     ownerUuid: ownerUuid
   }
   res.send(businesses[businessUuid])
