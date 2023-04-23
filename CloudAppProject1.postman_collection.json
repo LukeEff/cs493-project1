@@ -1,0 +1,417 @@
+{
+	"info": {
+		"_postman_id": "29cd6b90-45b2-4be9-8aad-12185245a291",
+		"name": "CloudAppProject1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25974373"
+	},
+	"item": [
+		{
+			"name": "Businesses",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "List every business",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/businesses?page=0",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"businesses"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve individual business details",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/businesses/45efb21b-782a-416d-865d-1430264acb24",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"businesses",
+										"45efb21b-782a-416d-865d-1430264acb24"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Business Owner",
+					"item": [
+						{
+							"name": "Add a business",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"businessName\": \"businessName\",\n    \"streetAddress\": \"123 Test St\",\n    \"city\": \"Test City\",\n    \"state\": \"Test State\",\n    \"zipCode\": \"12345\",\n    \"businessPhoneNum\": \"123-456-7890\",\n    \"businessEmail\": \"test@test.com\",\n    \"category\": \"Test Category\",\n    \"website\": \"www.test.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/businesses/create",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"businesses",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Modify field of owned business",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"city\": \"Oregon\",\n    \"zipCode\": \"97703\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/businesses/edit/7bbeaf67-3400-4a67-89b7-f79a29f52af4",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"businesses",
+										"edit",
+										"7bbeaf67-3400-4a67-89b7-f79a29f52af4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove an owned business",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/businesses/delete/356668bf-8380-4d9a-85b0-29e611b34d6d",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"businesses",
+										"delete",
+										"356668bf-8380-4d9a-85b0-29e611b34d6d"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Create review",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"starRating\": \"3\",\n    \"moneyRating\": \"2\",\n    \"writtenReview\": \"This is a randomly written review\",\n    \"businessUuid\": \"cff9e93f-e917-4b26-b9a7-c2788c7b697a\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/reviews/create",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"reviews",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Modify review",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/reviews/edit/",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"reviews",
+										"edit",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List all created reviews",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/reviews?page=0&businessUuid=cff9e93f-e917-4b26-b9a7-c2788c7b697a",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "businessUuid",
+											"value": "cff9e93f-e917-4b26-b9a7-c2788c7b697a"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete review",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/users/user/reviews/delete?reviewId=CHANGEME",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"user",
+										"reviews",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "reviewId",
+											"value": "CHANGEME"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Photos",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Add photo to business",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"caption\": \"This is a test caption\",\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/users/user/photos/create?businessId=123&userId=123",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"user",
+										"photos",
+										"create"
+									],
+									"query": [
+										{
+											"key": "businessId",
+											"value": "123"
+										},
+										{
+											"key": "userId",
+											"value": "123"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove photo",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/users/user/photos/delete?photoId",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"user",
+										"photos",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "photoId",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Modify caption of photo",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/users/user/photos/edit?photoId=123&caption=hmmm",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"user",
+										"photos",
+										"edit"
+									],
+									"query": [
+										{
+											"key": "photoId",
+											"value": "123"
+										},
+										{
+											"key": "caption",
+											"value": "hmmm"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List all uploaded photos by user",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/users/user/photos?page=1",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"user",
+										"photos"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Hello",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
