@@ -205,6 +205,14 @@ describe('Endpoints', function() {
           expect(JSON.parse(body)).to.be.an('array');
         }, 10000);
       });
+      it('should list all photos for a business', function () {
+        const businessUuid = createdBusiness.businessUuid;
+        const url = 'http://localhost:3000/photos?businessUuid=' + businessUuid;
+        request.get(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          expect(JSON.parse(body)).to.be.an('array');
+        }, 10000);
+      });
     });
   });
 });
