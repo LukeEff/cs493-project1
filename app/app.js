@@ -312,6 +312,11 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+// all other routes not defined above will return 404
+app.all('*', (req, res) => {
+  res.status(404).send('Not Found')
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
