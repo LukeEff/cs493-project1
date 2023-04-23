@@ -227,6 +227,7 @@ app.post('/photos/create', (req, res) => {
   const businessUuid = req.body.businessUuid
   const photoUrl = req.body.photoUrl
   const userUuid = req.body.userUuid
+  const caption = req.body.caption || ''
   if (!businesses[businessUuid]) {
     res.status(404).send('Business not found')
     return
@@ -245,7 +246,27 @@ app.post('/photos/create', (req, res) => {
     businessUuid: businessUuid,
     photoUrl: photoUrl,
     photoUuid: photoUuid,
-    userUuid: userUuid
+    userUuid: userUuid,
+    caption: caption
+  }
+  res.send(photos[photoUuid])
+});
+
+// Update a photo
+app.patch('/photos/edit/:photoUuid', (req, res) => {
+  const photoUuid = req.params.photoUuid
+  const prevPhoto = photos[photoUuid]
+  if (!prevPhoto) {
+    res.status(404).send('Photo not found')
+    return
+  }
+  const caption = req.body.caption || prevPhoto.caption
+  photos[photoUuid] = {
+    businessUuid: prevPhoto.businessUuid,
+    photoUrl: prevPhoto.photoUrl,
+    photoUuid: prevPhoto.photoUuid,
+    userUuid: prevPhoto.userUuid,
+    caption: caption
   }
   res.send(photos[photoUuid])
 });

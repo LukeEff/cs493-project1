@@ -191,12 +191,6 @@ describe('Endpoints', function() {
           createdPhoto = JSON.parse(body);
         }, 10000);
       });
-      it('should delete a photo', function () {
-        const url = 'http://localhost:3000/photos/delete/' + createdPhoto.photoUuid;
-        request.delete(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-        }, 10000);
-      });
       it('should list all photos', function () {
         const userUuid = '12345';
         const url = 'http://localhost:3000/photos?userUuid=' + userUuid;
@@ -211,6 +205,24 @@ describe('Endpoints', function() {
         request.get(url, function (error, response, body) {
           expect(response.statusCode).to.equal(200);
           expect(JSON.parse(body)).to.be.an('array');
+        }, 10000);
+      });
+      it('should update the caption of a photo', function () {
+const url = 'http://localhost:3000/photos/edit/' + createdPhoto.photoUuid;
+        const caption = 'Test Caption';
+        request.patch({
+          url: url,
+          body: JSON.stringify({caption: caption}),
+          headers: {'Content-Type': 'application/json'}
+        }, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          expect(JSON.parse(body).caption).to.equal(caption);
+        }, 10000);
+      });
+      it('should delete a photo', function () {
+        const url = 'http://localhost:3000/photos/delete/' + createdPhoto.photoUuid;
+        request.delete(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
         }, 10000);
       });
     });
