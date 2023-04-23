@@ -3,11 +3,9 @@ const bodyParser = require('body-parser')
 const app = express()
 app.use(bodyParser.json())
 const port = 3000
-//app.use(bodyParser.json())
 
 global.crypto = require('crypto')
 
-let users = {}
 
 /**
  * Business owner endpoints
@@ -200,6 +198,32 @@ app.delete('/reviews/delete/:reviewUuid', (req, res) => {
   }
   delete reviews[reviewUuid]
   res.send(review)
+});
+
+/**
+ * Photo endpoints for users
+ */
+let photos = {}
+
+// Add a photo to a business
+app.post('/photos/create', (req, res) => {
+  const businessUuid = req.body.businessUuid
+  const photoUrl = req.body.photoUrl
+  if (!businesses[businessUuid]) {
+    res.status(404).send('Business not found')
+    return
+  }
+  if (!photoUrl) {
+    res.status(400).send('Photo URL is required')
+    return
+  }
+  const photoUuid = crypto.randomUUID()
+  photos[photoUuid] = {
+    businessUuid: businessUuid,
+    photoUrl: photoUrl,
+    photoUuid: photoUuid
+  }
+  res.send(photos[photoUuid])
 });
 
 app.get('/', (req, res) => {
