@@ -24,6 +24,17 @@ app.post('/businesses/create', (req, res) => {
   const category = req.body.category
   const website = req.body.website
   const ownerId = req.body.ownerId
+  const ownerUuid = req.body.ownerUuid
+
+  if (!ownerUuid) {
+    res.status(400).send('Owner uuid is required')
+    return
+  }
+  if (!businessName || !streetAddress || !city || !state || !zipCode || !businessPhoneNum || !businessEmail || !category || !website || !ownerId) {
+    res.status(400).send('All fields are required')
+    return
+  }
+
   const businessUuid = crypto.randomUUID()
   businesses[businessUuid] = {
     businessName: businessName,
