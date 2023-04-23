@@ -8,6 +8,38 @@ let createdReview = {};
 let createdPhoto = {};
 
 describe('Endpoints', function() {
+  beforeEach(function () {
+    const url = 'http://localhost:3000/businesses/create';
+    const businessName = 'Test Business';
+    const streetAddress = '123 Test St';
+    const city = 'Test City';
+    const state = 'Test State';
+    const zipCode = '12345';
+    const businessPhoneNum = '123-456-7890';
+    const businessEmail = 'test@test.com';
+    const category = 'Test Category';
+    const website = 'www.test.com';
+    const ownerUuid = '12345';
+    const business = {
+      businessName: businessName,
+      streetAddress: streetAddress,
+      city: city,
+      state: state,
+      zipCode: zipCode,
+      businessPhoneNum: businessPhoneNum,
+      businessEmail: businessEmail,
+      category: category,
+      website: website,
+      ownerUuid: ownerUuid
+    };
+    request.post({
+      url: url,
+      body: JSON.stringify(business),
+      headers: {'Content-Type': 'application/json'}
+    }, function (error, response, body) {
+      createdBusiness = JSON.parse(body);
+    }, 10000);
+  });
   describe('Businesses', function () {
     describe('Business Owner', function () {
       it('should create a new business', function () {
@@ -64,45 +96,6 @@ describe('Endpoints', function() {
       });
     });
     describe('Business User', function () {
-      before(function () {
-        const url = 'http://localhost:3000/businesses/create';
-        const businessName = 'Test Business';
-        const streetAddress = '123 Test St';
-        const city = 'Test City';
-        const state = 'Test State';
-        const zipCode = '12345';
-        const businessPhoneNum = '123-456-7890';
-        const businessEmail = 'test@test.com';
-        const category = 'Test Category';
-        const website = 'www.test.com';
-        const ownerUuid = '12345';
-        const business = {
-          businessName: businessName,
-          streetAddress: streetAddress,
-          city: city,
-          state: state,
-          zipCode: zipCode,
-          businessPhoneNum: businessPhoneNum,
-          businessEmail: businessEmail,
-          category: category,
-          website: website,
-          ownerUuid: ownerUuid
-        };
-        request.post({
-          url: url,
-          body: JSON.stringify(business),
-          headers: {'Content-Type': 'application/json'}
-        }, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          createdBusiness = JSON.parse(body);
-        }, 10000);
-      });
-      after(function () {
-        const url = 'http://localhost:3000/businesses/delete/' + createdBusiness.businessUuid;
-        request.delete(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-        }, 10000);
-      });
       it('should list all businesses', function () {
         const url = 'http://localhost:3000/businesses';
         request.get(url, function (error, response, body) {
@@ -120,39 +113,6 @@ describe('Endpoints', function() {
     });
   });
   describe('Reviews', function () {
-    before(function () {
-      const url = 'http://localhost:3000/businesses/create';
-      const businessName = 'Test Business';
-      const streetAddress = '123 Test St';
-      const city = 'Test City';
-      const state = 'Test State';
-      const zipCode = '12345';
-      const businessPhoneNum = '123-456-7890';
-      const businessEmail = 'test@test.com';
-      const category = 'Test Category';
-      const website = 'www.test.com';
-      const ownerUuid = '12345';
-      const business = {
-        businessName: businessName,
-        streetAddress: streetAddress,
-        city: city,
-        state: state,
-        zipCode: zipCode,
-        businessPhoneNum: businessPhoneNum,
-        businessEmail: businessEmail,
-        category: category,
-        website: website,
-        ownerUuid: ownerUuid
-      };
-      request.post({
-        url: url,
-        body: JSON.stringify(business),
-        headers: {'Content-Type': 'application/json'}
-      }, function (error, response, body) {
-        expect(response.statusCode).to.equal(200);
-        createdBusiness = JSON.parse(body);
-      }, 10000);
-    });
     describe('Users', function () {
       it('should create a new review', function () {
         const url = 'http://localhost:3000/reviews/create';
@@ -181,11 +141,9 @@ describe('Endpoints', function() {
       it('should update a review', function () {
         const url = 'http://localhost:3000/reviews/edit/' + createdReview.reviewUuid;
         const starRating = 1;
-        const reviewUuid = createdReview.reviewUuid;
         request.patch({
           url: url,
           body: JSON.stringify({
-            reviewUuid: reviewUuid,
             starRating: starRating}),
           headers: {'Content-Type': 'application/json'}
         }, function (error, response, body) {
@@ -195,6 +153,34 @@ describe('Endpoints', function() {
       });
       it('should delete a review', function () {
         const url = 'http://localhost:3000/reviews/delete/' + createdReview.reviewUuid;
+        request.delete(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+        }, 10000);
+      });
+    });
+    describe('Photos', function () {
+      it('should create a new photo', function () {
+        const url = 'http://localhost:3000/photos/create';
+        const businessUuid = createdBusiness.businessUuid;
+        const userUuid = '12345';
+        const photoUrl = 'www.test.com';
+        const photoObj = {
+          businessUuid: businessUuid,
+          userUuid: userUuid,
+          photoUrl: photoUrl
+        };
+        request.post({
+          url: url,
+          body: JSON.stringify(photoObj),
+          headers: {'Content-Type': 'application/json'}
+        }, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          expect(JSON.parse(body).businessUuid).to.equal(businessUuid);
+          createdPhoto = JSON.parse(body);
+        }, 10000);
+      });
+      it('should delete a photo', function () {
+        const url = 'http://localhost:3000/photos/delete/' + createdPhoto.photoUuid;
         request.delete(url, function (error, response, body) {
           expect(response.statusCode).to.equal(200);
         }, 10000);
