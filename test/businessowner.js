@@ -144,7 +144,8 @@ describe('Endpoints', function() {
         request.patch({
           url: url,
           body: JSON.stringify({
-            starRating: starRating}),
+            starRating: starRating
+          }),
           headers: {'Content-Type': 'application/json'}
         }, function (error, response, body) {
           expect(response.statusCode).to.equal(200);
@@ -158,33 +159,33 @@ describe('Endpoints', function() {
         }, 10000);
       });
     });
-    describe('Photos', function () {
-      it('should create a new photo', function () {
-        const url = 'http://localhost:3000/photos/create';
-        const businessUuid = createdBusiness.businessUuid;
-        const userUuid = '12345';
-        const photoUrl = 'www.test.com';
-        const photoObj = {
-          businessUuid: businessUuid,
-          userUuid: userUuid,
-          photoUrl: photoUrl
-        };
-        request.post({
-          url: url,
-          body: JSON.stringify(photoObj),
-          headers: {'Content-Type': 'application/json'}
-        }, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          expect(JSON.parse(body).businessUuid).to.equal(businessUuid);
-          createdPhoto = JSON.parse(body);
-        }, 10000);
-      });
-      it('should delete a photo', function () {
-        const url = 'http://localhost:3000/photos/delete/' + createdPhoto.photoUuid;
-        request.delete(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-        }, 10000);
-      });
+  });
+  describe('Photos', function () {
+    it('should create a new photo', function () {
+      const url = 'http://localhost:3000/photos/create';
+      const businessUuid = createdBusiness.businessUuid;
+      const userUuid = '12345';
+      const photoUrl = 'www.test.com';
+      const photoObj = {
+        businessUuid: businessUuid,
+        userUuid: userUuid,
+        photoUrl: photoUrl
+      };
+      request.post({
+        url: url,
+        body: JSON.stringify(photoObj),
+        headers: {'Content-Type': 'application/json'}
+      }, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        expect(JSON.parse(body).businessUuid).to.equal(businessUuid);
+        createdPhoto = JSON.parse(body);
+      }, 10000);
+    });
+    it('should delete a photo', function () {
+      const url = 'http://localhost:3000/photos/delete/' + createdPhoto.photoUuid;
+      request.delete(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+      }, 10000);
     });
   });
 });
