@@ -41,6 +41,18 @@ describe('Businesses', function() {
         createdBusiness = JSON.parse(body);
       }, 10000);
     });
+    it('should update a business', function () {
+      const url = 'http://localhost:3000/businesses/edit/' + createdBusiness.businessUuid;
+      const businessName = 'Test Business 2';
+      request.patch({
+        url: url,
+        body: JSON.stringify({businessName: businessName}),
+        headers: {'Content-Type': 'application/json'}
+      }, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        expect(JSON.parse(body).businessName).to.equal(businessName);
+      });
+    });
   });
   describe('Business User', function () {
     it('should list all businesses', function () {
