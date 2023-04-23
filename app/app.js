@@ -25,6 +25,7 @@ app.post('/businesses/create', (req, res) => {
   const website = req.body.website
   const ownerUuid = req.body.ownerUuid
 
+  console.log(req.body)
   if (!ownerUuid) {
     res.status(400).send('Owner uuid is required')
     return

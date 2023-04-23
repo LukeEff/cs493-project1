@@ -34,10 +34,14 @@ describe('Business Owner', function() {
         website: website,
         ownerUuid: ownerUuid
       };
-request.post(url, {form: business}, function(err, res, body) {
-        expect(res.statusCode).to.equal(200);
-        expect(body).to.have.property('businessName', businessName);
-      });
+      request.post({
+        url: url,
+        body: JSON.stringify(business),
+        headers: {'Content-Type': 'application/json'}
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        expect(JSON.parse(body).businessName).to.equal(businessName);
+      }, 10000);
     });
   });
 });
