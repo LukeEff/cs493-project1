@@ -4,6 +4,8 @@ var request = require('request');
 var app = require('../app/app.js');
 
 let createdBusiness = {};
+let createdReview = {};
+let createdPhoto = {};
 
 describe('Endpoints', function() {
   describe('Businesses', function () {
@@ -173,6 +175,22 @@ describe('Endpoints', function() {
         }, function (error, response, body) {
           expect(response.statusCode).to.equal(200);
           expect(JSON.parse(body).businessUuid).to.equal(businessUuid);
+          createdReview = JSON.parse(body);
+        }, 10000);
+      });
+      it('should update a review', function () {
+        const url = 'http://localhost:3000/reviews/edit/' + createdReview.reviewUuid;
+        const starRating = 1;
+        const reviewUuid = createdReview.reviewUuid;
+        request.patch({
+          url: url,
+          body: JSON.stringify({
+            reviewUuid: reviewUuid,
+            starRating: starRating}),
+          headers: {'Content-Type': 'application/json'}
+        }, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          expect(JSON.parse(body).starRating).to.equal(starRating);
         }, 10000);
       });
     });
