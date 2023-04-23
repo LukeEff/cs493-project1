@@ -3,6 +3,8 @@ var expect = chai.expect;
 var request = require('request');
 var app = require('../app/app.js');
 
+let createdBusiness = {};
+
 describe('Businesses', function() {
   describe('Business Owner', function () {
     it('should create a new business', function () {
@@ -36,6 +38,7 @@ describe('Businesses', function() {
       }, function (error, response, body) {
         expect(response.statusCode).to.equal(200);
         expect(JSON.parse(body).businessName).to.equal(businessName);
+        createdBusiness = JSON.parse(body);
       }, 10000);
     });
   });
@@ -45,6 +48,13 @@ describe('Businesses', function() {
       request.get(url, function (error, response, body) {
         expect(response.statusCode).to.equal(200);
         expect(JSON.parse(body)).to.be.an('array');
+      }, 10000);
+    });
+    it('should list a business', function () {
+      const url = 'http://localhost:3000/businesses/' + createdBusiness.businessUuid;
+      request.get(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        expect(JSON.parse(body)).to.be.an('object');
       }, 10000);
     });
   });
