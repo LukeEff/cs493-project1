@@ -258,6 +258,18 @@ app.get('/photos', (req, res) => {
   res.send(pageOfPhotos)
 });
 
+// Delete a photo
+app.delete('/photos/delete/:photoUuid', (req, res) => {
+  const photoUuid = req.params.photoUuid
+  const photo = photos[photoUuid]
+  if (!photo) {
+    res.status(404).send('Photo not found')
+    return
+  }
+  delete photos[photoUuid]
+  res.send(photo)
+});
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
